@@ -11,4 +11,17 @@
 	<artifactId>spring-data-jpa-multiple-datasources</artifactId>
 	<name>Spring Data JPA - Multple datasources</name>
 
+	<dependencies>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.derby/derby -->
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derby</artifactId>
+			<version>10.12.1.1</version>
+		</dependency>
+	</dependencies>
 </project>

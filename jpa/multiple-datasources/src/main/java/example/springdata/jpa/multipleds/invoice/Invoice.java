@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package example.springdata.jpa.multipleds.order;
+package example.springdata.jpa.multipleds.invoice;
 
 import example.springdata.jpa.multipleds.customer.Customer.CustomerId;
 import lombok.EqualsAndHashCode;
@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Simple domain class representing an {@link Order}
+ * Simple domain class representing an {@link Invoice}
  * 
  * @author Oliver Gierke
  */
@@ -42,29 +42,29 @@ import java.util.List;
 @RequiredArgsConstructor
 @ToString
 // Needs to be explicitly named as Invoice is a reserved keyword
-@Table(name = "SampleOrder")
-public class Order {
+@Table(name = "SampleINvoice")
+public class Invoice {
 
 	private @Id @GeneratedValue Long id;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)//
-	private final List<LineItem> lineItems = new ArrayList<LineItem>();
+	private final List<LineItemInvoice> lineItemInvoices = new ArrayList<LineItemInvoice>();
 	private final CustomerId customer;
 
-	Order() {
+	Invoice() {
 		this.customer = null;
 	}
 
 	/**
-	 * Adds a {@link LineItem} to the {@link Order}.
+	 * Adds a {@link LineItemInvoice} to the {@link Invoice}.
 	 * 
-	 * @param lineItem must not be {@literal null}.
+	 * @param lineItemInvoice must not be {@literal null}.
 	 */
-	public void add(LineItem lineItem) {
+	public void add(LineItemInvoice lineItemInvoice) {
 
-		Assert.notNull(lineItem, "Line item must not be null!");
+		Assert.notNull(lineItemInvoice, "Line item must not be null!");
 
-		this.lineItems.add(lineItem);
+		this.lineItemInvoices.add(lineItemInvoice);
 	}
 
 	@Entity
@@ -72,8 +72,8 @@ public class Order {
 	@Getter
 	@RequiredArgsConstructor
 	@ToString
-	@Table(name = "LineItem")
-	public static class LineItem {
+	@Table(name = "LineItemInvoice")
+	public static class LineItemInvoice {
 
 		private @Id @GeneratedValue Long id;
 		private final String description;

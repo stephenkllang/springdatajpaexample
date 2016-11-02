@@ -15,22 +15,22 @@
  */
 package example.springdata.jpa.multipleds;
 
-import javax.sql.DataSource;
-
+import example.springdata.jpa.multipleds.customer.Customer;
+import example.springdata.jpa.multipleds.customer.Customer.CustomerId;
+import example.springdata.jpa.multipleds.customer.CustomerRepository;
+import example.springdata.jpa.multipleds.invoice.Invoice;
+import example.springdata.jpa.multipleds.invoice.InvoiceRepository;
+import example.springdata.jpa.multipleds.order.Order;
+import example.springdata.jpa.multipleds.order.Order.LineItem;
+import example.springdata.jpa.multipleds.order.OrderRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import example.springdata.jpa.multipleds.customer.Customer;
-import example.springdata.jpa.multipleds.customer.Customer.CustomerId;
-import example.springdata.jpa.multipleds.customer.CustomerRepository;
-import example.springdata.jpa.multipleds.order.Order;
-import example.springdata.jpa.multipleds.order.Order.LineItem;
-import example.springdata.jpa.multipleds.order.OrderRepository;
+import javax.sql.DataSource;
 
 /**
  * Sample component to demonstrate how to work with repositories backed by different {@link DataSource}s. Note how we
@@ -52,6 +52,8 @@ public class DataInitializer {
 
 	private final @NonNull OrderRepository orders;
 	private final @NonNull CustomerRepository customers;
+	private final @NonNull
+	InvoiceRepository invoices;
 
 	/**
 	 * Initializes a {@link Customer}.
@@ -78,5 +80,15 @@ public class DataInitializer {
 		order.add(new LineItem("Lakewood Guitar"));
 
 		return orders.save(order);
+	}
+	@Transactional("customerTransactionManager")
+	public Invoice initializeInvoice(CustomerId customer) {
+
+		Assert.notNull(customer, "Custoemr identifier must not be null!");
+
+		Invoice invoice = new Invoice(customer);
+		invoice.add(new Invoice.LineItemInvoice("Lakewood Guitar"));
+
+		return invoices.save(invoice);
 	}
 }

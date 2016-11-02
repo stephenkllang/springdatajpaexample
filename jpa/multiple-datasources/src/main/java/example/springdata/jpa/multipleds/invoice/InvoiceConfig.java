@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package example.springdata.jpa.multipleds.order;
+package example.springdata.jpa.multipleds.invoice;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +29,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 /**
- * Configuration for the {@link Order} slice of the system. A dedicated {@link DataSource},
+ * Configuration for the {@link Invoice} slice of the system. A dedicated {@link DataSource},
  * {@link JpaTransactionManager} and {@link EntityManagerFactory}. Note that there could of course be some deduplication
  * with {@link example.springdata.jpa.multipleds.customer.CustomerConfig}. I just decided to keep it to focus on the
  * sepeartion of the two. Also, some overlaps might not even occur in real world scenarios (whether to create DDl or the
@@ -38,17 +38,17 @@ import javax.sql.DataSource;
  * @author Oliver Gierke
  */
 @Configuration
-@EnableJpaRepositories(entityManagerFactoryRef = "orderEntityManagerFactory",
-		transactionManagerRef = "orderTransactionManager")
-class OrderConfig {
+@EnableJpaRepositories(entityManagerFactoryRef = "invoiceEntityManagerFactory",
+		transactionManagerRef = "invoiceTransactionManager")
+class InvoiceConfig {
 
 	@Bean
-	PlatformTransactionManager orderTransactionManager() {
-		return new JpaTransactionManager(orderEntityManagerFactory().getObject());
+	PlatformTransactionManager invoiceTransactionManager() {
+		return new JpaTransactionManager(invoiceEntityManagerFactory().getObject());
 	}
 
 	@Bean
-	LocalContainerEntityManagerFactoryBean orderEntityManagerFactory() {
+	LocalContainerEntityManagerFactoryBean invoiceEntityManagerFactory() {
 
 		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 		vendorAdapter.setGenerateDdl(true);
@@ -57,7 +57,7 @@ class OrderConfig {
 
 		factoryBean.setDataSource(orderDataSource());
 		factoryBean.setJpaVendorAdapter(vendorAdapter);
-		factoryBean.setPackagesToScan(OrderConfig.class.getPackage().getName());
+		factoryBean.setPackagesToScan(InvoiceConfig.class.getPackage().getName());
 
 		return factoryBean;
 	}
@@ -66,8 +66,8 @@ class OrderConfig {
 	DataSource orderDataSource() {
 
 		return new EmbeddedDatabaseBuilder().//
-				setType(EmbeddedDatabaseType.H2).//
-				setName("orders").//
+				setType(EmbeddedDatabaseType.DERBY).//
+				setName("invoice").//
 				build();
 	}
 }

@@ -60,5 +60,6 @@ public class Application {
 
 		CustomerId customerId = initializer.initializeCustomer();
 		initializer.initializeOrder(customerId);
+		initializer.initializeInvoice(customerId);
 	}
 }
